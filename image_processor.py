@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 import matplotlib.patches as mpatches
+import matplotlib.colors as mcolors
 
 from skimage import data
 from skimage.filters import threshold_otsu
@@ -76,20 +77,25 @@ class ImageRunner():
         image_label_overlay = label2rgb(label_image, image=self.denormalize(processed_image.squeeze()), bg_label=0)
         
         fig, ax = plt.subplots(figsize=(10, 6))
-        ax.imshow(image_label_overlay)
         
+        ax.imshow(image_label_overlay)
+        text_colors = list(mcolors.CSS4_COLORS.keys())
+        np.random.shuffle(text_colors)
+        text_colors = iter(text_colors)
+
         for region in regionprops(label_image):
             # take regions with large enough areas
             if region.area >= 500:
+                text_color = next(text_colors)
                 # draw rectangle around segmented coins
                 minr, minc, maxr, maxc = region.bbox
                 rect = mpatches.Rectangle((minc, minr), maxc - minc, maxr - minr,
-                                          fill=False, edgecolor='red', linewidth=2, label='Label')
+                                          fill=False, edgecolor=text_color, linewidth=2, label='Label', linestyle = 'dashed')
                 ax.add_patch(rect)
                 rx, ry = rect.get_xy()
                 cx = rx + rect.get_width()/2.0
                 cy = ry + rect.get_height()/2.0
-                ax.annotate(config['all_classes'][region.label], (cx, cy), color='black', weight='bold', fontsize=10, ha='right', va='center')
+                ax.annotate(config['all_classes'][region.label], (cx, cy), color=text_color, weight='bold', fontsize=14, ha='right', va='center')
 
         ax.set_axis_off()
         plt.tight_layout()
