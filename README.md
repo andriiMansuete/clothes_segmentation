@@ -1,0 +1,1 @@
+User guide in CLOTH_SEGMENTATION_USER_GUIDE.docx
