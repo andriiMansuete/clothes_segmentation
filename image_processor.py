@@ -95,7 +95,7 @@ class ImageRunner():
                 rx, ry = rect.get_xy()
                 cx = rx + rect.get_width()/2.0
                 cy = ry + rect.get_height()/2.0
-                ax.annotate(config['all_classes'][region.label], (cx, cy), color=text_color, weight='bold', fontsize=14, ha='right', va='center')
+                ax.annotate(config['all_classes'][region.label], (cx, cy), color=text_color, weight='bold', fontsize=14, ha='center', va='center')
 
         ax.set_axis_off()
         plt.tight_layout()
